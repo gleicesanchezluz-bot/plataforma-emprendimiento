@@ -1,32 +1,51 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const path = require('path');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// --- CONFIGURACIÓN DEL BOT ---
+const TELEGRAM_TOKEN = "8629940416:AAHPdgkeg-iMH7WKl2grYMAwFQezjquoyVM"; 
+const TELEGRAM_CHAT_ID = "5719584347"; 
+
+// Función para enviar notificaciones a Telegram
+async function enviarNotificacionTelegram(mensaje) {
+    try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: mensaje,
+                parse_mode: 'Markdown'
+            })
+        });
+    } catch (error) {
+        console.error("Error enviando a Telegram:", error);
+    }
+}
+
+// Rutas (Almacenamiento temporal)
 let ideas = [];
 let asesorias = [];
 
 app.get('/api/ideas', (req, res) => res.json(ideas));
-app.post('/api/ideas', (req, res) => {
-    const nuevaIdea = { id: Date.now(), ...req.body };
+
+app.post('/api/ideas', async (req, res) => {
+    const nuevaIdea = req.body;
     ideas.push(nuevaIdea);
-    res.json(nuevaIdea);
+    await enviarNotificacionTelegram(`💡 *Nueva Idea:* ${nuevaIdea.titulo}\n*Autor:* ${nuevaIdea.autor}`);
+    res.status(201).json({ mensaje: 'Guardado' });
 });
 
-app.get('/api/asesorias', (req, res) => res.json(asesorias));
-app.post('/api/asesorias', (req, res) => {
-    const nuevaAsesoria = { id: Date.now(), ...req.body };
+app.post('/api/asesorias', async (req, res) => {
+    const nuevaAsesoria = req.body;
     asesorias.push(nuevaAsesoria);
-    res.json(nuevaAsesoria);
+    await enviarNotificacionTelegram(`🤝 *Nueva Asesoría:* ${nuevaAsesoria.nombre}\n*Tema:* ${nuevaAsesoria.tema}`);
+    res.status(201).json({ mensaje: 'Guardado' });
 });
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
