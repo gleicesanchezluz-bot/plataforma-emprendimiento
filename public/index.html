@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Emprendimiento Pro</title>
+    <!-- Librería para arrastrar tarjetas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
         :root { 
             --sidebar-bg: #f0f9ff; 
@@ -11,7 +13,6 @@
             --bg-color: #f8fafc; 
             --text-color: #0c4a6e; 
         }
-
         body { font-family: 'Segoe UI', sans-serif; display: flex; margin: 0; background: var(--bg-color); color: var(--text-color); }
 
         /* Barra lateral */
@@ -30,7 +31,7 @@
         button:hover { background: #0284c7; }
 
         /* Tarjetas */
-        .card { background: #ffffff; padding: 15px; border-radius: 10px; border: 1px solid #e0f2fe; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card { background: #ffffff; padding: 15px; border-radius: 10px; border: 1px solid #e0f2fe; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); cursor: grab; }
         .date { font-size: 0.75em; color: #94a3b8; display: block; margin-top: 5px; }
 
         /* Adaptación a celular */
@@ -55,6 +56,7 @@
         <form id="proyectoForm">
             <input type="text" id="titulo" placeholder="Nombre proyecto" required>
             <input type="text" id="autor" placeholder="Tu nombre" required>
+            <input type="file" id="archivo">
             <button type="submit">Agregar al Tablero</button>
         </form>
 
@@ -89,6 +91,11 @@
                 div.className = 'card';
                 div.innerHTML = `<strong>${p.titulo}</strong><p>👤 ${p.autor}</p><span class="date">${p.fecha || ''}</span>`;
                 document.getElementById(p.estado || 'pendiente').appendChild(div);
+            });
+
+            // Inicializar arrastre
+            ['pendiente', 'proceso', 'terminado'].forEach(id => {
+                new Sortable(document.getElementById(id), { group: 'shared', animation: 150 });
             });
         }
         cargar();
