@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- CONFIGURACIÓN ---
-const TELEGRAM_TOKEN = "TU_TOKEN_AQUI"; // Asegúrate de tener tu token real
+const TELEGRAM_TOKEN = "TU_TOKEN_AQUI"; // 8629940416:AAHtWpv8q-oIXVaJcJinTqPANnmu6xJoZGQ
 const TELEGRAM_CHAT_ID = "5719584347"; 
 
 async function enviarNotificacionTelegram(mensaje) {
