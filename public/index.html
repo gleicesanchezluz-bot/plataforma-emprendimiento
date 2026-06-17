@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma Emprendimiento Pro</title>
+    <title>Plataforma Emprendimiento</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
         :root { --primary: #0ea5e9; --bg-color: #f8fafc; }
@@ -24,7 +23,6 @@
         <form id="proyectoForm">
             <input type="text" id="titulo" placeholder="Nombre proyecto" required>
             <input type="text" id="autor" placeholder="Tu nombre" required>
-            <input type="file" id="archivo">
             <button type="submit">Agregar al Tablero</button>
         </form>
         <div class="kanban">
@@ -36,11 +34,16 @@
     <script>
         document.getElementById('proyectoForm').onsubmit = async (e) => {
             e.preventDefault();
-            const formData = new FormData();
-            formData.append('titulo', document.getElementById('titulo').value);
-            formData.append('autor', document.getElementById('autor').value);
-            formData.append('archivo', document.getElementById('archivo').files[0]);
-            await fetch('/api/proyectos', { method: 'POST', body: formData });
+            const data = { 
+                titulo: document.getElementById('titulo').value,
+                autor: document.getElementById('autor').value,
+                fecha: new Date().toLocaleDateString()
+            };
+            await fetch('/api/proyectos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
             location.reload();
         };
         async function cargar() {
