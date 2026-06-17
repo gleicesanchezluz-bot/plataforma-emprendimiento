@@ -5,7 +5,7 @@ const path = require('path');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- CONFIGURACIÓN DEL BOT ---
+// Tus credenciales (Ya configuradas)
 const TELEGRAM_TOKEN = "8629940416:AAHPdgkeg-iMH7WKl2grYMAwFQezjquoyVM"; 
 const TELEGRAM_CHAT_ID = "5719584347"; 
 
@@ -16,36 +16,35 @@ async function enviarNotificacionTelegram(mensaje) {
         await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: mensaje,
-                parse_mode: 'Markdown'
-            })
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: mensaje, parse_mode: 'Markdown' })
         });
-    } catch (error) {
-        console.error("Error enviando a Telegram:", error);
-    }
+    } catch (error) { console.error(error); }
 }
 
-// Rutas (Almacenamiento temporal)
-let ideas = [];
-let asesorias = [];
+// Bases de datos en memoria (Simulando el Kanban)
+let proyectos = []; // Estructura: { titulo, autor, estado: 'pendiente' | 'proceso' | 'terminado' }
 
-app.get('/api/ideas', (req, res) => res.json(ideas));
+app.get('/api/proyectos', (req, res) => res.json(proyectos));
 
-app.post('/api/ideas', async (req, res) => {
-    const nuevaIdea = req.body;
-    ideas.push(nuevaIdea);
-    await enviarNotificacionTelegram(`💡 *Nueva Idea:* ${nuevaIdea.titulo}\n*Autor:* ${nuevaIdea.autor}`);
-    res.status(201).json({ mensaje: 'Guardado' });
+app.post('/api/proyectos', async (req, res) => {
+    const nuevo = { ...req.body, estado: 'pendiente' };
+    proyectos.push(nuevo);
+    await enviarNotificacionTelegram(`🚀 *Nuevo Proyecto:* ${nuevo.titulo}\n*Estado:* Pendiente`);
+    res.status(201).json(nuevo);
 });
 
-app.post('/api/asesorias', async (req, res) => {
-    const nuevaAsesoria = req.body;
-    asesorias.push(nuevaAsesoria);
-    await enviarNotificacionTelegram(`🤝 *Nueva Asesoría:* ${nuevaAsesoria.nombre}\n*Tema:* ${nuevaAsesoria.tema}`);
-    res.status(201).json({ mensaje: 'Guardado' });
+// Ruta para mover tareas (Kanban)
+app.put('/api/proyectos/:titulo', (req, res) => {
+    const { titulo } = req.params;
+    const { nuevoEstado } = req.body;
+    const proj = proyectos.find(p => p.titulo === titulo);
+    if (proj) {
+        proj.estado = nuevoEstado;
+        res.json({ mensaje: 'Estado actualizado' });
+    } else {
+        res.status(404).json({ mensaje: 'No encontrado' });
+    }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor en ${PORT}`));
