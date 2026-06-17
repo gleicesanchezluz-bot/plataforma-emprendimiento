@@ -18,6 +18,64 @@
     </style>
 </head>
 <body>
+    <script>
+        document.getElementById('proyectoForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const data = { 
+                titulo: document.getElementById('titulo').value,
+                autor: document.getElementById('autor').value,
+                fecha: new Date().toLocaleDateString()
+            };
+            await fetch('/api/proyectos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            location.reload();
+        };
+
+        // Lógica de navegación
+        document.querySelectorAll('.menu-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                const vistaKanban = document.querySelector('.kanban');
+                const vistaArchivos = document.getElementById('vistaArchivos');
+                const form = document.getElementById('proyectoForm');
+
+                if (index === 0) { // Clic en "Tablero"
+                    vistaKanban.style.display = 'grid';
+                    form.style.display = 'block';
+                    vistaArchivos.style.display = 'none';
+                } else if (index === 3) { // Clic en "Archivos"
+                    vistaKanban.style.display = 'none';
+                    form.style.display = 'none';
+                    vistaArchivos.style.display = 'block';
+                    cargarArchivos();
+                }
+            });
+        });
+
+        async function cargarArchivos() {
+            const res = await fetch('/api/proyectos');
+            const data = await res.json();
+            const contenedor = document.getElementById('listaArchivos');
+            contenedor.innerHTML = data.length > 0 
+                ? data.map(p => `<div class="card">📄 ${p.titulo} - Subido por ${p.autor}</div>`).join('')
+                : '<p>No hay proyectos registrados aún.</p>';
+        }
+
+        async function cargar() {
+            const res = await fetch('/api/proyectos');
+            const data = await res.json();
+            data.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `<strong>${p.titulo}</strong><p>👤 ${p.autor}</p>`;
+                document.getElementById(p.estado || 'pendiente').appendChild(div);
+            });
+            ['pendiente', 'proceso', 'terminado'].forEach(id => new Sortable(document.getElementById(id), { group: 'shared' }));
+        }
+        cargar();
+    </script>
     <div class="sidebar">
         <h2>EmprendeBot</h2>
         <div class="menu-item">🏠 Tablero</div>
