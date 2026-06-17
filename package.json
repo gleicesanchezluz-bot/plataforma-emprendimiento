@@ -1,13 +1,12 @@
-JSON
 {
   "name": "plataforma-emprendimiento",
   "version": "1.0.0",
-  "description": "Plataforma de seguimiento de proyectos",
+  "description": "Plataforma de emprendimiento escolar",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.18.2"
   }
 }
