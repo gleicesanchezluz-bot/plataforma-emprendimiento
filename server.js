@@ -6,7 +6,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- CONFIGURACIÓN ---
-const TELEGRAM_TOKEN = "TU_TOKEN_AQUI"; // 8629940416:AAHtWpv8q-oIXVaJcJinTqPANnmu6xJoZGQ
+// Token aplicado correctamente:
+const TELEGRAM_TOKEN = "8629940416:AAHtWpv8q-oIXVaJcJinTqPANnmu6xJoZGQ"; 
 const TELEGRAM_CHAT_ID = "5719584347"; 
 
 async function enviarNotificacionTelegram(mensaje) {
@@ -25,11 +26,10 @@ let proyectos = [];
 app.get('/api/proyectos', (req, res) => res.json(proyectos));
 
 app.post('/api/proyectos', async (req, res) => {
-    // Aquí es donde capturamos la fecha que viene del formulario
     const nuevo = { 
         titulo: req.body.titulo,
         autor: req.body.autor,
-        fecha: req.body.fecha, // Captura la fecha enviada desde el frontend
+        fecha: req.body.fecha,
         estado: 'pendiente' 
     };
     proyectos.push(nuevo);
