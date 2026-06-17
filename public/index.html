@@ -5,7 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Emprendimiento Pro</title>
     <style>
-        :root { --sidebar-bg: #eff6ff; --primary: #4f46e5; }
+        :root {
+        --sidebar-bg: #f0f9ff; /* Azul cielo muy claro para la barra */
+        --primary: #0ea5e9;    /* Azul cielo vibrante para botones */
+        --bg-color: #f8fafc;   /* Fondo general */
+        --text-color: #0c4a6e; /* Azul oscuro para texto */
+    }
+
+    body { font-family: 'Segoe UI', sans-serif; display: flex; margin: 0; background: var(--bg-color); color: var(--text-color); }
+
+    /* Barra lateral */
+    .sidebar { width: 220px; height: 100vh; background: var(--sidebar-bg); padding: 20px; border-right: 2px solid #bae6fd; }
+    
+    /* Botón */
+    button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+    button:hover { background: #0284c7; }
+
+    /* Columnas con borde sutil azul */
+    .columna { background: white; padding: 15px; border-radius: 12px; min-height: 400px; border: 2px solid #e0f2fe; }
+    
+    { --sidebar-bg: #eff6ff; --primary: #4f46e5; }
         body { font-family: 'Segoe UI', sans-serif; display: flex; margin: 0; background: #f8fafc; }
         
         /* Barra lateral */
