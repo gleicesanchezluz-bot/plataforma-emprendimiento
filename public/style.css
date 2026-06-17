@@ -1,209 +1,76 @@
-/* ---- DISEÑO GENERAL Y NAVBAR ---- */
-html {
-    scroll-behavior: smooth;
-}
+<style>
+    /* Importamos una fuente elegante de Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
-    margin: 0;
-    padding-top: 60px; /* Espacio para que el menú fijo no tape el título */
-    color: #333;
-}
-
-.navbar {
-    background-color: #1e3c72;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 2rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-.nav-logo a {
-    color: white;
-    font-size: 1.4rem;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.nav-menu {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-}
-
-.nav-menu a {
-    color: #e0e6ed;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.nav-menu a:hover {
-    color: white;
-}
-
-.nav-btn-github {
-    background-color: #24292e;
-    padding: 0.4rem 0.8rem;
-    border-radius: 5px;
-    border: 1px solid #444;
-}
-
-.nav-btn-github:hover {
-    background-color: #333 !important;
-}
-
-header {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    text-align: center;
-    padding: 3.5rem 1rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2.6rem;
-}
-
-header p {
-    margin: 0.5rem 0 0 0;
-    font-size: 1.2rem;
-    opacity: 0.9;
-}
-
-main {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-/* ---- CONTENEDORES Y ICONOS ---- */
-.contenedor {
-    background-color: white;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-h2 {
-    color: #1e3c72;
-    margin-top: 0;
-    border-bottom: 2px solid #eef2f3;
-    padding-bottom: 0.5rem;
-}
-
-.text-icon {
-    margin-right: 0.5rem;
-    color: #2ec4b6;
-}
-
-/* ---- FORMULARIOS ---- */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-input, textarea {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-family: inherit;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border-color: #2a5298;
-    box-shadow: 0 0 5px rgba(42, 82, 152, 0.3);
-}
-
-button {
-    background-color: #2a5298;
-    color: white;
-    border: none;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-button:hover {
-    background-color: #1e3c72;
-}
-
-.btn-secundario {
-    background-color: #2ec4b6;
-}
-
-.btn-secundario:hover {
-    background-color: #0cb0a0;
-}
-
-/* ---- MURO DE IDEAS ---- */
-.tarjeta-idea {
-    background-color: #f8fafc;
-    border-left: 5px solid #2a5298;
-    padding: 1.2rem;
-    margin-top: 1rem;
-    border-radius: 0 8px 8px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-
-.tarjeta-idea h3 {
-    margin: 0 0 0.5rem 0;
-    color: #333;
-}
-
-.tarjeta-idea p {
-    margin: 0 0 0.5rem 0;
-    color: #555;
-    line-height: 1.5;
-}
-
-.cargando {
-    text-align: center;
-    color: #777;
-    font-style: italic;
-}
-
-/* ---- FOOTER ---- */
-footer {
-    text-align: center;
-    padding: 1.5rem;
-    color: #777;
-    font-size: 0.9rem;
-    margin-top: 4rem;
-    border-top: 1px solid #eef2f3;
-}
-
-/* RESPONSIVIDAD BÁSICA PARA CELULARES */
-@media (max-width: 600px) {
-    .navbar {
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 0.8rem 1rem;
+    :root {
+        --font-family: 'Outfit', sans-serif; /* Fuente moderna y limpia */
+        --bg-color: #f8fafc;
+        --header-bg: #1e293b; /* Gris oscuro elegante */
+        --pending-color: #fbbf24;
+        --process-color: #38bdf8;
+        --done-color: #34d399;
     }
-    .nav-menu {
-        gap: 0.8rem;
-        font-size: 0.9rem;
+
+    body { 
+        font-family: var(--font-family); 
+        margin: 0; 
+        background: var(--bg-color);
+        color: #334155;
     }
-    body {
-        padding-top: 100px; /* Más espacio en móvil porque el menú crece hacia abajo */
+
+    h1 { 
+        text-align: center; 
+        background-color: var(--header-bg); 
+        color: #f1f5f9; 
+        padding: 40px 0; 
+        margin-top: 0;
+        font-weight: 300;
+        letter-spacing: 2px;
     }
-}
+
+    /* Diseño del formulario más minimalista */
+    form { 
+        background: white; 
+        padding: 20px; 
+        max-width: 500px; 
+        margin: -40px auto 40px auto; 
+        border-radius: 16px; 
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+        display: flex; gap: 10px;
+    }
+    
+    form input { 
+        padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; flex-grow: 1; 
+    }
+    
+    form button { 
+        padding: 10px 20px; border: none; border-radius: 8px; 
+        background: #1e293b; color: white; cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .kanban { display: flex; gap: 20px; padding: 0 40px; justify-content: center; }
+    
+    .columna { 
+        width: 320px; 
+        background: #ffffff; 
+        padding: 20px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
+    }
+
+    .columna h3 { 
+        text-transform: uppercase; 
+        font-size: 0.85rem; 
+        letter-spacing: 1.5px; 
+        color: #94a3b8;
+    }
+
+    .tarea { 
+        background: #f1f5f9; 
+        padding: 15px; 
+        margin-bottom: 10px; 
+        border-radius: 10px; 
+        border-left: 4px solid #cbd5e1;
+    }
+</style>
