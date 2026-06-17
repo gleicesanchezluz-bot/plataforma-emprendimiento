@@ -2,137 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Emprendimiento Escolar</title>
-    <!-- Iconos profesionales -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Plataforma de Emprendimiento</title>
+    <style>
+        .kanban { display: flex; gap: 20px; padding: 20px; }
+        .columna { width: 30%; background: #f4f4f4; padding: 10px; border-radius: 8px; }
+        .tarea { background: white; padding: 10px; margin: 10px 0; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    </style>
 </head>
 <body>
-
-    <!-- NAVBAR OBLIGATORIO POR RÚBRICA -->
-    <nav class="navbar">
-        <div class="nav-logo">
-            <a href="#inicio"><i class="fa-solid fa-rocket"></i> EmprendeEscolar</a>
-        </div>
-        <ul class="nav-menu">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#publicar">Publicar Idea</a></li>
-            <li><a href="#muro">Muro</a></li>
-            <li><a href="#asesorias">Asesorías</a></li>
-            <!-- Enlace externo obligatorio -->
-            <li><a href="https://github.com/gleicesanchezluz-bot/plataforma-emprendimiento" target="_blank" class="nav-btn-github"><i class="fa-brands fa-github"></i> GitHub</a></li>
-        </ul>
-    </nav>
-
-    <header id="inicio">
-        <h1>🚀 EmprendeEscolar</h1>
-        <p>La plataforma para dar vida a tus ideas de negocio</p>
-    </header>
-
-    <main>
-        <!-- Sección para Publicar Ideas -->
-        <section class="contenedor" id="publicar">
-            <h2><i class="fa-solid fa-lightbulb text-icon"></i> Publica tu Idea de Emprendimiento</h2>
-            <form id="form-idea">
-                <input type="text" id="titulo-idea" placeholder="Nombre de tu proyecto o idea" required>
-                <textarea id="descripcion-idea" placeholder="¿De qué trata tu emprendimiento? ¿Qué problema resuelve?" rows="4" required></textarea>
-                <input type="text" id="autor-idea" placeholder="Tu nombre y grado" required>
-                <button type="submit">Compartir Idea</button>
-            </form>
-        </section>
-
-        <!-- Sección del Muro de Ideas -->
-        <section class="contenedor" id="muro">
-            <h2><i class="fa-solid fa-thumbtack text-icon"></i> Muro de Proyectos</h2>
-            <div id="muro-ideas">
-                <p class="cargando">Cargando proyectos escolares...</p>
-            </div>
-        </section>
-
-        <!-- Sección de Asesorías -->
-        <section class="contenedor" id="asesorias">
-            <h2><i class="fa-solid fa-handshake text-icon"></i> Solicita una Asesoría Mentora</h2>
-            <p>¿Necesitas ayuda con las finanzas, el diseño o las ventas? ¡Agenda una cita con un profesor mentor!</p>
-            <form id="form-asesoria">
-                <input type="text" id="nombre-asesoria" placeholder="Tu nombre completo" required>
-                <input type="email" id="correo-asesoria" placeholder="Tu correo escolar" required>
-                <input type="text" id="tema-asesoria" placeholder="¿En qué necesitas ayuda? (Ej. Costos, Logotipo)" required>
-                <button type="submit" class="btn-secundario">Solicitar Mentoría</button>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Plataforma de Emprendimiento Escolar - Creado por Gleice Sánchez. Todos los derechos reservados.</p>
-    </footer>
+    <h1>Tablero de Proyectos</h1>
+    <div class="kanban">
+        <div class="columna" id="pendiente"><h3>Pendiente</h3></div>
+        <div class="columna" id="proceso"><h3>En Proceso</h3></div>
+        <div class="columna" id="terminado"><h3>Terminado</h3></div>
+    </div>
 
     <script>
-        const formIdea = document.getElementById('form-idea');
-        const muroIdeas = document.getElementById('muro-ideas');
-
-        async function cargarIdeas() {
-            try {
-                const res = await fetch('/api/ideas');
-                const ideas = await res.json();
-                muroIdeas.innerHTML = '';
-                if (ideas.length === 0) {
-                    muroIdeas.innerHTML = '<p>Aún no hay proyectos publicados. ¡Sé el primero!</p>';
-                    return;
-                }
-                ideas.forEach(idea => {
-                    const div = document.createElement('div');
-                    div.className = 'tarjeta-idea';
-                    div.innerHTML = `
-                        <h3>${idea.titulo}</h3>
-                        <p>${idea.descripcion}</p>
-                        <small>Por: <strong>${idea.autor}</strong></small>
-                    `;
-                    muroIdeas.appendChild(div);
-                });
-            } catch (error) {
-                muroIdeas.innerHTML = '<p>Error al conectar con el servidor.</p>';
-            }
+        async function cargarProyectos() {
+            const res = await fetch('/api/proyectos');
+            const proyectos = await res.json();
+            proyectos.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'tarea';
+                div.innerHTML = `<strong>${p.titulo}</strong><p>${p.autor}</p>`;
+                document.getElementById(p.estado).appendChild(div);
+            });
         }
-
-        formIdea.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const nuevaIdea = {
-                titulo: document.getElementById('titulo-idea').value,
-                descripcion: document.getElementById('descripcion-idea').value,
-                autor: document.getElementById('autor-idea').value
-            };
-
-            await fetch('/api/ideas', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevaIdea)
-            });
-
-            formIdea.reset();
-            cargarIdeas();
-        });
-
-        const formAsesoria = document.getElementById('form-asesoria');
-        formAsesoria.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const nuevaAsesoria = {
-                nombre: document.getElementById('nombre-asesoria').value,
-                correo: document.getElementById('correo-asesoria').value,
-                tema: document.getElementById('tema-asesoria').value
-            };
-
-            await fetch('/api/asesorias', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevaAsesoria)
-            });
-
-            alert('¡Tu solicitud de asesoría ha sido registrada con éxito!');
-            formAsesoria.reset();
-        });
-
-        cargarIdeas();
+        cargarProyectos();
     </script>
 </body>
 </html>
