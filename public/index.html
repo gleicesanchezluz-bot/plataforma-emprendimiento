@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Plataforma de Emprendimiento</title>
+    <style>
+        /* Aquí le damos forma al tablero */
+        .kanban { display: flex; gap: 20px; padding: 20px; }
+        .columna { width: 30%; background: #f4f4f4; padding: 15px; border-radius: 8px; min-height: 300px; border: 1px solid #ddd; }
+        .tarea { background: white; padding: 10px; margin: 10px 0; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    </style>
 </head>
 <body>
     <h1>Plataforma de Emprendimiento</h1>
@@ -12,10 +18,10 @@
         <button type="submit">Agregar al Tablero</button>
     </form>
 
-    <div style="display: flex; gap: 20px;">
-        <div id="pendiente"><h3>Pendiente</h3></div>
-        <div id="proceso"><h3>En Proceso</h3></div>
-        <div id="terminado"><h3>Terminado</h3></div>
+    <div class="kanban">
+        <div class="columna" id="pendiente"><h3>Pendiente</h3></div>
+        <div class="columna" id="proceso"><h3>En Proceso</h3></div>
+        <div class="columna" id="terminado"><h3>Terminado</h3></div>
     </div>
 
     <script>
@@ -29,6 +35,18 @@
             });
             location.reload(); 
         };
+
+        async function cargarProyectos() {
+            const res = await fetch('/api/proyectos');
+            const proyectos = await res.json();
+            proyectos.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'tarea';
+                div.innerHTML = `<strong>${p.titulo}</strong><br><small>Autor: ${p.autor}</small>`;
+                document.getElementById(p.estado).appendChild(div);
+            });
+        }
+        cargarProyectos();
     </script>
 </body>
 </html>
