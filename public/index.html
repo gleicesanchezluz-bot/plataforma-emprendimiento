@@ -4,30 +4,134 @@
     <meta charset="UTF-8">
     <title>Plataforma de Emprendimiento</title>
     <style>
-        /* Aquí le damos forma al tablero */
-        .kanban { display: flex; gap: 20px; padding: 20px; }
-        .columna { width: 30%; background: #f4f4f4; padding: 15px; border-radius: 8px; min-height: 300px; border: 1px solid #ddd; }
-        .tarea { background: white; padding: 10px; margin: 10px 0; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        /* Estilos Generales y Colores */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #e9d5ff 100%);
+            --header-bg: #4f46e5;
+            --pending-color: #f59e0b; /* Ambar */
+            --process-color: #3b82f6; /* Azul */
+            --done-color: #10b981;    /* Esmeralda */
+            --form-btn: linear-gradient(to right, #4f46e5, #9333ea);
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background: var(--bg-gradient);
+            min-height: 100vh;
+        }
+
+        /* Cabecera Principal */
+        h1 { 
+            text-align: center; 
+            background-color: var(--header-bg); 
+            color: white; 
+            padding: 30px 0; 
+            margin-top: 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Estilo del Formulario */
+        form { 
+            background: white; 
+            padding: 30px; 
+            max-width: 600px; 
+            margin: 30px auto; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            display: flex; gap: 15px; flex-wrap: wrap; 
+        }
+        
+        form input { 
+            flex-grow: 1; padding: 12px 15px; 
+            border: 2px solid #e5e7eb; border-radius: 8px; outline: none; 
+            transition: border-color 0.3s; 
+        }
+        
+        form input:focus { border-color: var(--header-bg); }
+        
+        form button { 
+            padding: 12px 25px; 
+            border: none; border-radius: 8px; 
+            background: var(--form-btn); color: white; font-weight: bold; 
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; 
+        }
+        
+        form button:hover { 
+            transform: translateY(-2px); box-shadow: 0 5px 15px rgba(111, 102, 241, 0.4); 
+        }
+
+        /* Estilo del Tablero Kanban */
+        .kanban { display: flex; gap: 25px; padding: 20px 40px; justify-content: center; }
+        
+        .columna { 
+            width: 300px; background: white; 
+            padding: 20px; border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+            border-top: 5px solid; 
+        }
+        
+        /* Colores específicos de columna */
+        .columna#pendiente { border-top-color: var(--pending-color); }
+        .columna#proceso { border-top-color: var(--process-color); }
+        .columna#terminado { border-top-color: var(--done-color); }
+
+        /* Títulos e Iconos de Columna */
+        .columna h3 { display: flex; align-items: center; gap: 10px; margin-top: 0; }
+        .status-icon { font-size: 1.2em; }
+        
+        .columna#pendiente h3 { color: var(--pending-color); }
+        .columna#proceso h3 { color: var(--process-color); }
+        .columna#terminado h3 { color: var(--done-color); }
+
+        /* Estilo de la Tarea/Proyecto */
+        .tarea { 
+            background: #fff; border: 1px solid #e5e7eb; 
+            padding: 15px; margin: 15px 0; border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03); 
+            border-left: 4px solid; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tarea:hover { transform: scale(1.02); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
+        
+        /* Bordes de color para las tarjetas */
+        .columna#pendiente .tarea { border-left-color: var(--pending-color); }
+        .columna#proceso .tarea { border-left-color: var(--process-color); }
+        .columna#terminado .tarea { border-left-color: var(--done-color); }
+
+        .tarea-titulo { font-weight: bold; color: #1f2937; display: block; margin-bottom: 5px; }
+        .tarea-autor { font-size: 0.9em; color: #6b7280; }
     </style>
 </head>
 <body>
     <h1>Plataforma de Emprendimiento</h1>
+
     <form id="proyectoForm">
-        <input type="text" id="titulo" placeholder="Nombre del proyecto" required>
-        <input type="text" id="autor" placeholder="Tu nombre" required>
+        <input type="text" id="titulo" placeholder="🚀 Nombre de tu gran idea..." required>
+        <input type="text" id="autor" placeholder="👤 Tu nombre o equipo" required>
         <button type="submit">Agregar al Tablero</button>
     </form>
 
     <div class="kanban">
-        <div class="columna" id="pendiente"><h3>Pendiente</h3></div>
-        <div class="columna" id="proceso"><h3>En Proceso</h3></div>
-        <div class="columna" id="terminado"><h3>Terminado</h3></div>
+        <div class="columna" id="pendiente">
+            <h3><span class="status-icon">⏳</span>Pendiente</h3>
+        </div>
+        <div class="columna" id="proceso">
+            <h3><span class="status-icon">⚙️</span>En Proceso</h3>
+        </div>
+        <div class="columna" id="terminado">
+            <h3><span class="status-icon">✅</span>Terminado</h3>
+        </div>
     </div>
 
     <script>
         document.getElementById('proyectoForm').onsubmit = async (e) => {
             e.preventDefault();
-            const data = { titulo: document.getElementById('titulo').value, autor: document.getElementById('autor').value };
+            const data = { 
+                titulo: document.getElementById('titulo').value, 
+                autor: document.getElementById('autor').value 
+            };
             await fetch('/api/proyectos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -42,7 +146,10 @@
             proyectos.forEach(p => {
                 const div = document.createElement('div');
                 div.className = 'tarea';
-                div.innerHTML = `<strong>${p.titulo}</strong><br><small>Autor: ${p.autor}</small>`;
+                div.innerHTML = `
+                    <span class="tarea-titulo">${p.titulo}</span>
+                    <span class="tarea-autor">Autor: ${p.autor}</span>
+                `;
                 document.getElementById(p.estado).appendChild(div);
             });
         }
