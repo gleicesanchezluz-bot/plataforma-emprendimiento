@@ -1,1 +1,131 @@
+/* ---- DISEÑO GENERAL ---- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
 
+header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+header p {
+    margin: 0.5rem 0 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* ---- CONTENEDORES Y TARJETAS ---- */
+.contenedor {
+    background-color: white;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: #1e3c72;
+    margin-top: 0;
+    border-bottom: 2px solid #eef2f3;
+    padding-bottom: 0.5rem;
+}
+
+/* ---- FORMULARIOS ---- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+input, textarea {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #2a5298;
+    box-shadow: 0 0 5px rgba(42, 82, 152, 0.3);
+}
+
+button {
+    background-color: #2a5298;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #1e3c72;
+}
+
+.btn-secundario {
+    background-color: #2ec4b6;
+}
+
+.btn-secundario:hover {
+    background-color: #0cb0a0;
+}
+
+/* ---- MURO DE IDEAS ---- */
+.tarjeta-idea {
+    background-color: #f8fafc;
+    border-left: 5px solid #2a5298;
+    padding: 1.2rem;
+    margin-top: 1rem;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.tarjeta-idea h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+.tarjeta-idea p {
+    margin: 0 0 0.5rem 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+.cargando {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}
+
+/* ---- FOOTER ---- */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 4rem;
+    border-top: 1px solid #eef2f3;
+}
