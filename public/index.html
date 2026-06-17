@@ -21,6 +21,13 @@
         /* Tarjetas */
         .card { background: #fdfdfd; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
         .date { font-size: 0.75em; color: #94a3b8; display: block; margin-top: 5px; }
+        /* Esto hace que el diseño se adapte al celular */
+@media (max-width: 768px) {
+    body { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #e0e7ff; }
+    .kanban { grid-template-columns: 1fr; } /* ¡Aquí está la magia: 1 sola columna! */
+    .columna { min-height: 200px; }
+}
     </style>
 </head>
 <body>
