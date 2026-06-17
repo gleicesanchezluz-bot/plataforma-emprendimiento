@@ -3,31 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Plataforma de Emprendimiento</title>
-    <style>
-        .kanban { display: flex; gap: 20px; padding: 20px; }
-        .columna { width: 30%; background: #f4f4f4; padding: 10px; border-radius: 8px; min-height: 200px; }
-        .tarea { background: white; padding: 10px; margin: 10px 0; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        form { margin: 20px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
-    </style>
 </head>
 <body>
     <h1>Plataforma de Emprendimiento</h1>
-
     <form id="proyectoForm">
-        <h3>Registrar nuevo prototipo</h3>
         <input type="text" id="titulo" placeholder="Nombre del proyecto" required>
         <input type="text" id="autor" placeholder="Tu nombre" required>
         <button type="submit">Agregar al Tablero</button>
     </form>
 
-    <div class="kanban">
-        <div class="columna" id="pendiente"><h3>Pendiente</h3></div>
-        <div class="columna" id="proceso"><h3>En Proceso</h3></div>
-        <div class="columna" id="terminado"><h3>Terminado</h3></div>
+    <div style="display: flex; gap: 20px;">
+        <div id="pendiente"><h3>Pendiente</h3></div>
+        <div id="proceso"><h3>En Proceso</h3></div>
+        <div id="terminado"><h3>Terminado</h3></div>
     </div>
 
     <script>
-        // Registrar proyecto al enviar formulario
         document.getElementById('proyectoForm').onsubmit = async (e) => {
             e.preventDefault();
             const data = { titulo: document.getElementById('titulo').value, autor: document.getElementById('autor').value };
@@ -36,21 +27,8 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-            location.reload(); // Recarga para ver la tarjeta nueva
+            location.reload(); 
         };
-
-        // Cargar proyectos existentes
-        async function cargarProyectos() {
-            const res = await fetch('/api/proyectos');
-            const proyectos = await res.json();
-            proyectos.forEach(p => {
-                const div = document.createElement('div');
-                div.className = 'tarea';
-                div.innerHTML = `<strong>${p.titulo}</strong><p>Autor: ${p.autor}</p>`;
-                document.getElementById(p.estado).appendChild(div);
-            });
-        }
-        cargarProyectos();
     </script>
 </body>
 </html>
