@@ -1,16 +1,11 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads/'), 
-    filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
-});
-const upload = multer({ storage: storage });
-
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// --- CONFIGURACIÓN ---
 const TELEGRAM_TOKEN = "8629940416:AAHtWpv8q-oIXVaJcJinTqPANnmu6xJoZGQ"; 
 const TELEGRAM_CHAT_ID = "5719584347"; 
 
@@ -26,13 +21,20 @@ async function enviarNotificacionTelegram(mensaje) {
 }
 
 let proyectos = []; 
+
 app.get('/api/proyectos', (req, res) => res.json(proyectos));
-app.post('/api/proyectos', upload.single('archivo'), async (req, res) => {
-    const nuevo = { titulo: req.body.titulo, autor: req.body.autor, fecha: req.body.fecha, archivo: req.file ? req.file.filename : null, estado: 'pendiente' };
+
+app.post('/api/proyectos', async (req, res) => {
+    const nuevo = { 
+        titulo: req.body.titulo, 
+        autor: req.body.autor, 
+        fecha: req.body.fecha, 
+        estado: 'pendiente' 
+    };
     proyectos.push(nuevo);
     await enviarNotificacionTelegram(`🚀 *Nuevo Proyecto:* ${nuevo.titulo}\n👤 *Autor:* ${nuevo.autor}`);
     res.status(201).json(nuevo);
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Activo en ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor activo en puerto ${PORT}`));
